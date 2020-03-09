@@ -34,6 +34,7 @@ local plugins = {
   "prometheus",
   "proxy-cache",
   "session",
+  "cluster-switch",
 }
 
 local plugin_map = {}
