@@ -476,7 +476,7 @@ typedefs.hosts = Schema.define {
       },
     },
     match_any = {
-      patterns = { "^%*%.", "%.%*$", "^[^*]*$" },
+      patterns = { "^%a*%*%.", "%.%*$", "^[^*]*$" },
       err = "invalid wildcard: must be placed at leftmost or rightmost label",
     },
     custom_validator = validate_host_with_wildcards,

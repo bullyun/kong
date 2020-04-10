@@ -226,7 +226,7 @@ local function marshall_route(r)
         has_host_wildcard = true
 
         local wildcard_host_regex = host:gsub("%.", "\\.")
-                                        :gsub("%*", ".+") .. "$"
+                                        :gsub("%*", ".*") .. "$"
         insert(route_t.hosts, {
           wildcard = true,
           value    = host,
