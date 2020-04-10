@@ -994,7 +994,7 @@ local function load(path, custom_conf, opts)
   end
 
   do
-    local http_flags = { "ssl", "http2", "proxy_protocol", "transparent",
+    local http_flags = {"default_server", "ssl", "http2", "proxy_protocol", "transparent",
                          "deferred", "bind", "reuseport" }
     local stream_flags = { "proxy_protocol", "transparent", "bind",
                            "reuseport" }
