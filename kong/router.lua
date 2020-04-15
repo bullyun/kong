@@ -1085,23 +1085,8 @@ function _M.new(routes)
     -- * longer plain URIs > shorter plain URIs
 
     sort(marshalled_routes, function(r1, r2)
-
-      -- 调整到最高，因为可配可控
-      do
-        local rp1 = r1.route.regex_priority or 0
-        local rp2 = r2.route.regex_priority or 0
-
-        if rp1 ~= rp2 then
-          return rp1 > rp2
-        end
-      end
-
       if r1.submatch_weight ~= r2.submatch_weight then
         return r1.submatch_weight > r2.submatch_weight
-      end
-
-      if r1.max_uri_length ~= r2.max_uri_length then
-        return r1.max_uri_length > r2.max_uri_length
       end
 
       do
@@ -1111,6 +1096,19 @@ function _M.new(routes)
         if r1_n_headers ~= r2_n_headers then
           return r1_n_headers > r2_n_headers
         end
+      end
+
+      do
+        local rp1 = r1.route.regex_priority or 0
+        local rp2 = r2.route.regex_priority or 0
+
+        if rp1 ~= rp2 then
+          return rp1 > rp2
+        end
+      end
+
+      if r1.max_uri_length ~= r2.max_uri_length then
+        return r1.max_uri_length > r2.max_uri_length
       end
 
       if r1.route.created_at ~= nil and r2.route.created_at ~= nil then
