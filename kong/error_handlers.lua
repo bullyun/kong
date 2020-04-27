@@ -13,7 +13,7 @@ local TYPE_HTML = "text/html"
 local text_template = "%s"
 local json_template = '{"message":"%s"}'
 local xml_template = '<?xml version="1.0" encoding="UTF-8"?>\n<error><message>%s</message></error>'
-local html_template = '<html><head><title>Kong Error</title></head><body><h1>Kong Error</h1><p>%s.</p></body></html>'
+local html_template = '<html><head><title>Error</title></head><body><h1>Error</h1><p>%s.</p></body></html>'
 
 local BODIES = {
   s400 = "Bad request",
