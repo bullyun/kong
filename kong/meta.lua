@@ -11,7 +11,7 @@ local version = setmetatable({
 })
 
 return {
-  _NAME = "kong",
+  _NAME = "bullyun",
   _VERSION = tostring(version),
   _VERSION_TABLE = version,
   _SERVER_TOKENS = "bullyun/" .. tostring(version),
