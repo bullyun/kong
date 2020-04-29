@@ -1283,7 +1283,7 @@ function _M.new(routes)
     do
       local match_t = cache:get(cache_key)
       if match_t then
-        log(ERR, "use cache: uri=" .. req_uri .. " cache_key=" .. cache_key)
+        -- log(ERR, "use cache: uri=" .. req_uri .. " cache_key=" .. cache_key)
         return match_t
       end
     end
