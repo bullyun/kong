@@ -1260,11 +1260,15 @@ function _M.new(routes)
 
     -- header match
 
+    local header_cache_key = ""
     for _, header_name in ipairs(plain_indexes.headers) do
       if req_headers[header_name] then
-        req_category = bor(req_category, MATCH_RULES.HEADER)
-        hits.header_name = header_name
-        break
+        if not hits.header_name then
+          req_category = bor(req_category, MATCH_RULES.HEADER)
+          hits.header_name = header_name
+        end
+
+        header_cache_key = header_cache_key .. header_name .. "|" .. req_headers[header_name] .. "|"
       end
     end
 
@@ -1274,11 +1278,12 @@ function _M.new(routes)
     local cache_key = req_method .. "|" .. req_uri .. "|" .. req_host ..
                       "|" .. ctx.src_ip .. "|" .. ctx.src_port ..
                       "|" .. ctx.dst_ip .. "|" .. ctx.dst_port ..
-                      "|" .. ctx.sni
+                      "|" .. ctx.sni .. "|" .. header_cache_key
 
     do
       local match_t = cache:get(cache_key)
-      if match_t and hits.header_name == nil then
+      if match_t then
+        log(ERR, "use cache: uri=" .. req_uri .. " cache_key=" .. cache_key)
         return match_t
       end
     end
@@ -1534,10 +1539,7 @@ function _M.new(routes)
               }
             }
 
-            if band(matched_route.match_rules, MATCH_RULES.HEADER) == 0 then
-              cache:set(cache_key, match_t)
-            end
-
+            cache:set(cache_key, match_t)
             return match_t
           end
         end
