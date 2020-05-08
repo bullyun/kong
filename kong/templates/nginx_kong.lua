@@ -122,28 +122,28 @@ server {
     $(el.name) $(el.value);
 > end
 
-    rewrite_by_lua_block {
-        Kong.rewrite()
-    }
-
-    access_by_lua_block {
-        Kong.access()
-    }
-
-    header_filter_by_lua_block {
-        Kong.header_filter()
-    }
-
-    body_filter_by_lua_block {
-        Kong.body_filter()
-    }
-
-    log_by_lua_block {
-        Kong.log()
-    }
-
     location / {
         default_type                     '';
+
+        rewrite_by_lua_block {
+            Kong.rewrite()
+        }
+
+        access_by_lua_block {
+            Kong.access()
+        }
+
+        header_filter_by_lua_block {
+            Kong.header_filter()
+        }
+
+        body_filter_by_lua_block {
+            Kong.body_filter()
+        }
+
+        log_by_lua_block {
+            Kong.log()
+        }
 
         set $ctx_ref                     '';
         set $upstream_te                 '';
@@ -172,34 +172,6 @@ server {
         proxy_pass_header  Date;
         proxy_ssl_name     $upstream_host;
         proxy_pass         $upstream_scheme://kong_upstream$upstream_uri;
-    }
-
-    location @grpc {
-        internal;
-        set $kong_proxy_mode  'grpc';
-
-        grpc_set_header    Host              $upstream_host;
-        grpc_set_header    X-Forwarded-For   $upstream_x_forwarded_for;
-        grpc_set_header    X-Forwarded-Proto $upstream_x_forwarded_proto;
-        grpc_set_header    X-Forwarded-Host  $upstream_x_forwarded_host;
-        grpc_set_header    X-Forwarded-Port  $upstream_x_forwarded_port;
-        grpc_set_header    X-Real-IP         $remote_addr;
-
-        grpc_pass grpc://kong_upstream;
-    }
-
-    location @grpcs {
-        internal;
-        set $kong_proxy_mode  'grpc';
-
-        grpc_set_header    Host              $upstream_host;
-        grpc_set_header    X-Forwarded-For   $upstream_x_forwarded_for;
-        grpc_set_header    X-Forwarded-Proto $upstream_x_forwarded_proto;
-        grpc_set_header    X-Forwarded-Host  $upstream_x_forwarded_host;
-        grpc_set_header    X-Forwarded-Port  $upstream_x_forwarded_port;
-        grpc_set_header    X-Real-IP         $remote_addr;
-
-        grpc_pass grpcs://kong_upstream;
     }
 
     location = /kong_error_handler {
