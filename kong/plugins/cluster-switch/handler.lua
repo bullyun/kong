@@ -131,6 +131,9 @@ local function init_refresh_config()
 end
 
 local function req_add_header()
+  if ngx.req.get_header("bullyun-cluster") then
+    return;
+  end
 
   if not ClusterSwitchHandle.cluster_config then
     return;
